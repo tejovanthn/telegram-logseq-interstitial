@@ -11,7 +11,7 @@
     "slimbot": "^5.1.0"
   },
   "scripts": {
-    "run": "node src/index.js"
+    "start": "node src/index.js"
   },
   "engines": {
     "node": "14.x"
