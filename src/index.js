@@ -15,7 +15,7 @@ const updateFile = async (file, contentToAdd) => {
   let content
   try {
     content = await api.RepositoryFiles.showRaw(process.env.GITLAB_PROJECT_ID, file, process.env.GITLAB_BRANCH || "master")
-    content = content + `\n\t- ${contentToAdd}\n`
+    content = content + `\t- ${contentToAdd}\n`
     await api.RepositoryFiles.edit(process.env.GITLAB_PROJECT_ID, file, process.env.GITLAB_BRANCH || "master", content, "auto commit from interstitial")
   } catch (e) {
     console.error(e)
@@ -34,7 +34,7 @@ slimbot.on('message', message => {
 });
 
 if (process.env.NODE_ENV === "production") {
-  slimbot.setWebhook(`${process.env.HEROKU_WEBHOOK_URL || ""}`)
+  slimbot.setWebhook(`${process.env.HEROKU_WEBHOOK_URL}${process.env.TELEGRAM_BOT_ID}`)
 } else {
   slimbot.startPolling();
 }
