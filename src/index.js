@@ -34,7 +34,7 @@ slimbot.on('message', message => {
 });
 
 if (process.env.NODE_ENV === "production") {
-  slimbot.setWebhook(`${process.env.HEROKU_WEBHOOK_URL}${process.env.TELEGRAM_BOT_ID}`)
+  slimbot.setWebhook(`${process.env.HEROKU_WEBHOOK_URL}`)
 } else {
   slimbot.startPolling();
 }
