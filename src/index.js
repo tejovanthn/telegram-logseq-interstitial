@@ -37,6 +37,7 @@ if (process.env.NODE_ENV === "production") {
 
   server.post('/bot_updates', function handle(req, res) {
     let message = req.body;
+    console.log(message)
     updateFile(getFileName(message.date), `${getTimeStamp(message.date)} ${message.text}`)
       .then(() => slimbot.sendMessage(message.chat.id, 'Message saved'))
       .catch(err => { slimbot.sendMessage(message.chat.id, JSON.stringify(error)) });
