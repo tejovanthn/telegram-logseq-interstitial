@@ -30,16 +30,18 @@ const getTimeStamp = (dateInt) => dayjs(dateInt * 1000).format("HH:mm")
 
 if (process.env.NODE_ENV === "production") {
   let server = restify.createServer();
-  server.use(restify.bodyParser());
+  server.use(restify.plugins.bodyParser());
 
-  slimbot.setWebhook(`${process.env.HEROKU_WEBHOOK_URL}`)
+  slimbot.setWebhook(`${process.env.HEROKU_WEBHOOK_URL}/bot_updates`)
   console.log(slimbot.getWebhookInfo());
+
   server.post('/bot_updates', function handle(req, res) {
     let message = req.body;
     updateFile(getFileName(message.date), `${getTimeStamp(message.date)} ${message.text}`)
       .then(() => slimbot.sendMessage(message.chat.id, 'Message saved'))
       .catch(err => { slimbot.sendMessage(message.chat.id, JSON.stringify(error)) });
   });
+
   server.listen(process.env.PORT || 3000);
 } else {
   slimbot.on('message', message => {
