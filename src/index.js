@@ -1,6 +1,7 @@
 import Slimbot from "slimbot"
 import { Gitlab } from '@gitbeaker/node'
 import dayjs from "dayjs"
+import restify from "restify"
 import dotenv from "dotenv"
 dotenv.config()
 
@@ -27,14 +28,25 @@ const getFileName = (dateInt) => `journals/${dayjs(dateInt * 1000).format("YYYY_
 
 const getTimeStamp = (dateInt) => dayjs(dateInt * 1000).format("HH:mm")
 
-slimbot.on('message', message => {
-  updateFile(getFileName(message.date), `${getTimeStamp(message.date)} ${message.text}`)
-    .then(() => slimbot.sendMessage(message.chat.id, 'Message saved'))
-    .catch(err => { slimbot.sendMessage(message.chat.id, JSON.stringify(error)) });
-});
-
 if (process.env.NODE_ENV === "production") {
+  let server = restify.createServer();
+  server.use(restify.bodyParser());
+
   slimbot.setWebhook(`${process.env.HEROKU_WEBHOOK_URL}`)
+  console.log(slimbot.getWebhookInfo());
+  server.post('/bot_updates', function handle(req, res) {
+    let message = req.body;
+    updateFile(getFileName(message.date), `${getTimeStamp(message.date)} ${message.text}`)
+      .then(() => slimbot.sendMessage(message.chat.id, 'Message saved'))
+      .catch(err => { slimbot.sendMessage(message.chat.id, JSON.stringify(error)) });
+  });
+  server.listen(process.env.PORT || 3000);
 } else {
+  slimbot.on('message', message => {
+    updateFile(getFileName(message.date), `${getTimeStamp(message.date)} ${message.text}`)
+      .then(() => slimbot.sendMessage(message.chat.id, 'Message saved'))
+      .catch(err => { slimbot.sendMessage(message.chat.id, JSON.stringify(error)) });
+  });
+
   slimbot.startPolling();
 }

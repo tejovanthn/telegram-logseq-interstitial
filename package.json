@@ -8,6 +8,7 @@
     "@gitbeaker/node": "^34.1.0",
     "dayjs": "^1.10.7",
     "dotenv": "^10.0.0",
+    "restify": "^8.5.1",
     "slimbot": "^5.1.0"
   },
   "scripts": {
