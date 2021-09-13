@@ -35,12 +35,12 @@ if (process.env.NODE_ENV === "production") {
   slimbot.setWebhook(`${process.env.HEROKU_WEBHOOK_URL}/bot_updates`)
   console.log(slimbot.getWebhookInfo());
 
-  server.post('/bot_updates', function handle(req, res) {
-    let message = req.body;
+  server.post('/bot_updates', (req, res) => {
+    let { message } = req.body;
     console.log(message)
     updateFile(getFileName(message.date), `${getTimeStamp(message.date)} ${message.text}`)
       .then(() => slimbot.sendMessage(message.chat.id, 'Message saved'))
-      .catch(err => { slimbot.sendMessage(message.chat.id, JSON.stringify(error)) });
+      .catch(error => { slimbot.sendMessage(message.chat.id, JSON.stringify(error)) });
   });
 
   server.listen(process.env.PORT || 3000);
@@ -48,7 +48,7 @@ if (process.env.NODE_ENV === "production") {
   slimbot.on('message', message => {
     updateFile(getFileName(message.date), `${getTimeStamp(message.date)} ${message.text}`)
       .then(() => slimbot.sendMessage(message.chat.id, 'Message saved'))
-      .catch(err => { slimbot.sendMessage(message.chat.id, JSON.stringify(error)) });
+      .catch(error => { slimbot.sendMessage(message.chat.id, JSON.stringify(error)) });
   });
 
   slimbot.startPolling();
