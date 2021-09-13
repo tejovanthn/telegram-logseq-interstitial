@@ -33,4 +33,8 @@ slimbot.on('message', message => {
     .catch(err => { slimbot.sendMessage(message.chat.id, JSON.stringify(error)) });
 });
 
-slimbot.startPolling();
+if (process.env.NODE_ENV === "production") {
+  slimbot.setWebhook(`${process.env.HEROKU_WEBHOOK_URL}/${process.env.TELEGRAM_BOT_ID}`)
+} else {
+  slimbot.startPolling();
+}
