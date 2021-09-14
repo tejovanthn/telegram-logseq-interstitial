@@ -8,4 +8,6 @@ Collect the GitLab project ID from the UI (GITLAB_PROJECT_ID)
 
 Create a heroku app, and the project URL (HEROKU_WEBHOOK_URL)
 
+Set the timezone (TIMEZONE) to where you're using the telegram bot. This is needed to update the timestamps properly.
+
 Set the above keys in a .env file in the project root. This defaults to the master branch, but you can chnage it with GITLAB_BRANCH key.
