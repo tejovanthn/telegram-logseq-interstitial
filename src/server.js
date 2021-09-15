@@ -6,7 +6,9 @@ export default ({ slimbot, api }) => {
   let server = restify.createServer();
   server.use(restify.plugins.bodyParser());
 
-  slimbot.deleteWebhook();
+  if (slimbot.getWebhookInfo()) {
+    slimbot.deleteWebhook();
+  }
   slimbot.setWebhook(`${process.env.HEROKU_WEBHOOK_URL}/bot_updates`)
   console.log(slimbot.getWebhookInfo());
 
