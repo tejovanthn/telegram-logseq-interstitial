@@ -16,6 +16,7 @@ export default ({ slimbot, api }) => {
 
   server.post('/bot_updates', (req, res) => {
     let { message } = req.body;
+    console.log(message.date, recent_id, message.message_id)
     if (message.date > recent_id) {
       updateFile({ api, message })
         .then(() => slimbot.sendMessage(message.chat.id, 'Message saved'))
