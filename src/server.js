@@ -2,7 +2,7 @@
 import restify from "restify"
 import { updateFile } from "./updateFile.js"
 
-const setupWebhooks = async () => {
+const setupWebhooks = async (slimbot) => {
   const connection = await slimbot.getWebhookInfo()
   if (connection) {
     await slimbot.deleteWebhook()
@@ -15,7 +15,7 @@ export default ({ slimbot, api }) => {
   server.use(restify.plugins.bodyParser());
   let recent_id = -1
 
-  setupWebhooks()
+  setupWebhooks(slimbot)
     .then(() => {
       server.post('/bot_updates', (req, res) => {
         let { message } = req.body;
